@@ -142,6 +142,21 @@ function initLogin(config) {
     bioBtn.addEventListener('click', () => verifyBiometric(config.webauthn_credential_id));
   } else {
     bioBtn.classList.add('hidden');
+    if (window.PublicKeyCredential) {
+      const registerBtn = document.createElement('button');
+      registerBtn.id = 'bio-register-btn';
+      registerBtn.className = 'biometric-btn';
+      registerBtn.style.fontSize = '13px';
+      registerBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <path d="M12 1a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z"/>
+          <path d="M3 12c0-2 1-4 2.5-5.5M21 12c0-2-1-4-2.5-5.5"/>
+          <path d="M7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"/>
+        </svg>
+        Cadastrar digital / FaceID`;
+      registerBtn.addEventListener('click', registerBiometric);
+      bioBtn.insertAdjacentElement('afterend', registerBtn);
+    }
   }
 
   buildNumpad('login-numpad', key => {
@@ -177,6 +192,42 @@ async function onLoginFull(config) {
 }
 
 // ---- WEBAUTHN ----
+async function registerBiometric() {
+  if (!window.PublicKeyCredential) {
+    showMessage('login-msg', 'Biometria não suportada neste dispositivo.', 'error');
+    return;
+  }
+  try {
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: 'DailyEnglish', id: location.hostname },
+        user: { id: new Uint8Array(16), name: 'user', displayName: 'Usuário' },
+        pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+        authenticatorSelection: { userVerification: 'preferred', residentKey: 'discouraged' },
+        timeout: 60000
+      }
+    });
+    if (!credential) return;
+    const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+    const { error } = await client.from('user_config')
+      .update({ webauthn_credential_id: credId })
+      .eq('id', 1);
+    if (error) {
+      showMessage('login-msg', 'Erro ao salvar biometria.', 'error');
+      return;
+    }
+    showMessage('login-msg', 'Biometria cadastrada! Use-a no próximo acesso.', 'success');
+    document.getElementById('bio-btn').classList.remove('hidden');
+    document.getElementById('bio-register-btn')?.remove();
+  } catch (e) {
+    if (e.name !== 'NotAllowedError') {
+      showMessage('login-msg', 'Erro ao cadastrar biometria.', 'error');
+    }
+  }
+}
+
 async function verifyBiometric(credentialId) {
   try {
     const challenge = crypto.getRandomValues(new Uint8Array(32));

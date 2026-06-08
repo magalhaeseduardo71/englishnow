@@ -24,7 +24,7 @@
     </div>
 
     <!-- SETUP: primeiro cadastro do PIN -->
-    <div id="setup-section" style="display:none; width:100%; display:flex; flex-direction:column; align-items:center; gap:24px;">
+    <div id="setup-section" style="display:none; width:100%; flex-direction:column; align-items:center; gap:24px;">
       <div class="auth-title" id="setup-title">Crie seu PIN de acesso</div>
       <div class="pin-dots" id="setup-dots">
         <div class="pin-dot"></div>
@@ -38,7 +38,7 @@
     </div>
 
     <!-- LOGIN: PIN existente -->
-    <div id="login-section" style="display:none; width:100%; display:flex; flex-direction:column; align-items:center; gap:24px;">
+    <div id="login-section" style="display:none; width:100%; flex-direction:column; align-items:center; gap:24px;">
       <div class="auth-title">Bem-vindo de volta!</div>
       <div class="pin-dots" id="login-dots">
         <div class="pin-dot"></div>
@@ -61,7 +61,7 @@
   </div>
 
   <!-- Lock overlay -->
-  <div class="lock-overlay" id="lock-overlay">
+  <div class="lock-overlay" id="lock-overlay" style="display:none">
     <div class="lock-icon">🔒</div>
     <div class="lock-text">Muitas tentativas incorretas</div>
     <div class="lock-countdown" id="lock-countdown">30</div>
