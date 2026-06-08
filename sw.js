@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dailyenglish-v1';
+const CACHE_NAME = 'dailyenglish-v2';
 const ASSETS = [
   'index.html', 'app.html',
   'css/reset.css', 'css/variables.css', 'css/auth.css', 'css/app.css',
@@ -11,7 +11,9 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS))
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -25,11 +27,28 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+
+  // Supabase: sempre busca da rede
   if (url.hostname.includes('supabase.co')) {
-    e.respondWith(fetch(e.request).catch(() => new Response('{}', { headers: { 'Content-Type': 'application/json' } })));
+    e.respondWith(
+      fetch(e.request).catch(() => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+    );
     return;
   }
+
+  // Navegação (abrir app / recarregar): serve index.html do cache
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      caches.match('index.html')
+        .then(cached => cached || fetch(e.request))
+        .catch(() => fetch(e.request))
+    );
+    return;
+  }
+
+  // Demais recursos: cache primeiro, rede como fallback
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(e.request)
+      .then(cached => cached || fetch(e.request))
   );
 });
