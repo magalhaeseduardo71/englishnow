@@ -1,0 +1,2 @@
+export const SUPABASE_URL = 'https://nbcqogigjatzkmeghgok.supabase.co';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iY3FvZ2lnamF0emttZWdoZ29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NjQxNDIsImV4cCI6MjA5NjQ0MDE0Mn0.WLxrXy1o1zKhu7Qq5lf3dp8oqAh6gPy4m30OE9DUUnI';

@@ -1,0 +1,283 @@
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  overflow: hidden;
+}
+
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 160, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  position: relative;
+  z-index: 1;
+}
+
+.auth-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.auth-logo-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--gradient-accent);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: var(--shadow-accent);
+}
+
+.auth-logo-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-logo-subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+/* PIN dots */
+.pin-dots {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: transparent;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.pin-dot.filled {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(0, 229, 160, 0.5);
+}
+
+.pin-dots.error .pin-dot.filled {
+  background: var(--color-error);
+  border-color: var(--color-error);
+  box-shadow: 0 0 12px rgba(255, 77, 109, 0.5);
+}
+
+.pin-dots.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%       { transform: translateX(-8px); }
+  30%       { transform: translateX(8px); }
+  45%       { transform: translateX(-6px); }
+  60%       { transform: translateX(6px); }
+  75%       { transform: translateX(-4px); }
+  90%       { transform: translateX(4px); }
+}
+
+/* Numpad */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.numpad-key {
+  height: 64px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.numpad-key:active {
+  background: var(--color-surface-raised);
+  transform: scale(0.94);
+}
+
+.numpad-key.zero {
+  grid-column: 2;
+}
+
+.numpad-key.backspace {
+  grid-column: 3;
+  font-size: 18px;
+  color: var(--color-text-secondary);
+}
+
+.numpad-key.empty {
+  background: transparent;
+  border-color: transparent;
+  pointer-events: none;
+}
+
+/* Biometric button */
+.biometric-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-dim);
+  border: 1px solid rgba(0, 229, 160, 0.3);
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  gap: 6px;
+  flex-direction: row;
+}
+
+.biometric-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.biometric-btn:active {
+  transform: scale(0.96);
+  background: rgba(0, 229, 160, 0.2);
+}
+
+.biometric-btn.hidden {
+  display: none;
+}
+
+/* Status messages */
+.auth-message {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  min-height: 20px;
+  transition: color var(--transition-fast);
+}
+
+.auth-message.error {
+  color: var(--color-error);
+}
+
+.auth-message.success {
+  color: var(--color-success);
+}
+
+/* Lock countdown */
+.lock-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.lock-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lock-icon {
+  font-size: 48px;
+}
+
+.lock-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-error);
+}
+
+.lock-countdown {
+  font-family: var(--font-mono);
+  font-size: 48px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* Confirm PIN step */
+.pin-confirm-hint {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Primary button */
+.btn-primary {
+  width: 100%;
+  max-width: 300px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-accent);
+  color: #0A0A0F;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-accent);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
