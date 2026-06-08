@@ -1,6 +1,6 @@
 {
-  "name": "DailyEnglish",
-  "short_name": "DailyEnglish",
+  "name": "EnglishNow",
+  "short_name": "EnglishNow",
   "description": "Aprenda inglês do dia a dia",
   "start_url": "/englishnow/",
   "scope": "/englishnow/",

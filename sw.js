@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dailyenglish-v3';
+const CACHE_NAME = 'englishnow-v2';
 const ASSETS = [
   'index.html', 'app.html',
   'css/reset.css', 'css/variables.css', 'css/auth.css', 'css/app.css',
